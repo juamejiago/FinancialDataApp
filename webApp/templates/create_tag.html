@@ -1,0 +1,23 @@
+{% extends 'home.html' %}
+{% block accesories %}
+{% load tailwind_filters %}
+
+<div class="center_container">
+    <div class="login_container">
+        <h2>Insert the name of the tag (or tags, separated by a comma and a space) that you want to create:</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{form|crispy}}
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        
+    </div>
+</div>
+
+<script>
+    {% if comprobation_create_tag %}
+        alert('You must verify that this tag has not been added previously or that the format is correct.');
+    {% endif %}
+</script>
+{% endblock %}

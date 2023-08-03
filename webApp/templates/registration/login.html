@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load tailwind_filters %}
+
+<div class="center_container">
+    <div class="login_container">
+        <h2>Please submit your credentials to log in:</h2>
+        <form method="post" class="form_login">
+            {% csrf_token %}
+           {{form|crispy}}
+            <button type="submit">Sign in</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

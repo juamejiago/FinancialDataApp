@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="center_container">
+    <div class="presentation_container">
+        <h2>Instructions of use</h2>
+        <p>
+            Instructions for using the stock analysis app "Financial Analysis System" with login, categories, and filters are as follows:
+        </p>
+            <ol>
+                
+                <li><strong>User Registration and Login:</strong> 
+                    <ul>
+                        <li>You can log in to your account by providing your username and password. However, if you don't have one, you can create it.</li>
+                        <li>If you haven't registered, then you can create an account by providing your username and creating a password.</li>
+                        <li>These options are available in the upper right part of the web page at a side of the welcoming message.</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Dashboard:</strong> 
+                    <ul>
+                        <li>Upon logging in, you will be directed to the dashboard.</li>
+                        <li>The dashboard displays an overview of your stock portfolio, performance, and relevant financial data.</li>
+                        <li>Filters are at the side of the colum' names. You can classify in the upper or lower criteria.</li>
+                        <li>Financial data from your stock portfolio can be updated clicking the "Update data from tags/s" button.</li>
+                        <li>New stocks could be added clicking the "Create new tag/s" button, then submiting the stock symbol of your preference and that's it. Some stock symbols can be found at this address:<a href="https://finance.yahoo.com/trending-tickers" target="_blank"><svg class="icon-web"><use xlink:href="#icon-web"></use></svg></a>.</li>
+                        <li>Stocks could be deleted selecting the check marks at the side of the tag's symbols on the table and then clicking the "Delete tag/s" button.</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Stock Data Analysis:</strong> 
+                    <ul>
+                        <li>Select a stock from the category list or use the search feature to find a specific stock.</li>
+                        <li>The app fetches stock data using the yfinance library and displays relevant information such as historical prices, technical indicators, and moving averages.</li>
+                        <li>Apply filters to narrow down the stock list based on criteria like price range, market capitalization, or dividend yield.</li>
+                        <li>Navigate to the "Categories" section to access different stock categories. You can create new ones selecting the check marks at the side of the tag's symbols on the table and then clicking the "Press this button to visualize categories" button.</li>
+                        <li>Consider deleting the categories from the "&#9003;" button at the side of the category name.</li>
+                        <li>Notice that you can add new stocks to a category selecting the check marks at the side of the tag's symbols on the table and then clicking the "Add tag/s to a category" button.</li>
+                        <li>Transfer stocks between categories clicking the "Transfer tag/s between categories" button, selecting the check marks at the side of the tag's symbols on the table, clicking on the categories and then clicking on "Submit" button.</li>
+                    </ul>
+                </li>
+                
+                <li><strong>Logout:</strong> 
+                    <ul>
+                        <li>Safely log out from the app after use to protect your account and data. You can signout click in the upper right part of the web page at a side of the welcoming message.</li>
+                    </ul>
+                </li>
+        
+            </ol>
+        <p>
+            Please note that this is an early version. The actual app's interface and functionalities could present some issues. Please report them if you notice this, I'm always open to suggestions. Thank you so much!
+        </p>
+        </p>
+        <h2>What are the functionalities of this web page?</h2>
+        <p>
+            A web page that uses the Django framework and the yfinance library could be a financial data analysis application. Let's call it "Financial Analysis System".
+            The main features of this web page are as follows:
+        </p>
+            <ul>
+                
+                <li><strong>User Authentication:</strong> The web page can have user registration and login functionalities using Django's built-in authentication system. This allows users to create accounts and securely access their personalized data and settings.</li>
+                
+                <li><strong>Dashboard:</strong> Once logged in, users are presented with a personalized dashboard. The dashboard displays an overview of their financial data, such as updated stock information and other relevant functionalities.</li>
+                
+                <li><strong>Stock Data Analysis:</strong> The web page can allow users to search for and analyze stock data using the yfinance library. Users can enter the stock symbol, and the web page will retrieve the stock's historical price data, perform calculations, and generate visualizations like stock price indexes, fliters for numeric values, and technical indicators.</li>
+                
+                <li><strong>Portfolio Management:</strong> Users can manage their investment portfolio, add or remove stocks of personalized categories, and track their performance over time. The web page can show the allocation of different stocks.</li>
+                
+            </ul>
+        <p>
+            The combination of Django's robust web development capabilities and the yfinance library's financial data retrieval and analysis features provides a powerful platform for creating a user-friendly and interactive financial data analysis web page. Other libraries such as json, ast, datetime, jinja2 and crispy-tailwind were used in less manner to make everything work fine. All rights reserved to their creators.
+        </p>
+        <p><strong>Link to Github Repository:</strong> <a href="https://github.com/juamejiago/FinancialDataApp" target="_blank"><svg class="icon-social-github"><use xlink:href="#icon-social-github"></use></svg></a></p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Financial analysis system</title>
+        <link rel="icon" type="image/png" href="{% static 'favicon.png' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/svg-icons.css' %}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind+Madurai">
+        <script src="{% static 'js/main.js' %}"></script>
+        <script defer src="{% static 'js/svg-icons.js' %}"></script>
+    </head>
+    <body>
+        <nav class="navbar">    
+            <div class="navbar_column">
+                <ul class="navbar_list">
+                    <li class="navbar_item">
+                        <a href={% url 'presentation' %}>Home</a>
+                    </li>
+                    <li class="navbar_item">
+                        <a href={% url 'home' %}>Visualize financial data</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar_column">
+                <ul class="navbar_list">
+                    <li class="navbar_logo">
+                        <img src="{% static 'favicon.png' %}" alt="UnalLogo">
+                    </li>
+                </ul>
+            </div>
+            <div class="navbar_column">
+                <ul class="navbar_list">
+                    <li>
+                        {% if request.user.is_authenticated %}
+                            <div class="title_home">
+                                <h2>Welcome {{ user.username | upper }}!</h2>
+                            </div>
+                        {% else %}
+                            <div class="title_home">
+                                <h2>Welcome Guest!</h2>
+                            </div>
+                        {% endif %}
+                    </li>
+                    <li class="navbar_item" onclick="drop_down_user_options()" id="dropdown_user_options_button">
+                        <a class="user_icon">&#128100; &#9660;</a>
+                        <ul class="dropdown_menu" id="dropdown_user_options">
+                            {% if request.user.is_authenticated %}
+                                <li class="navbar_item">
+                                    <a href={% url 'logout' %}>Sign out</a>
+                                </li>
+                            {% else %}
+                                <li class="navbar_item">
+                                    <a href={% url 'login' %}>Sign in</a>
+                                </li>
+                            
+                                <li class="navbar_item">
+                                    <a href={% url 'register' %}>Register</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        {% if messages %}
+            {% for message in messages %}
+                <script>
+                    Swal.fire({
+                    "title":"Success", 
+                    "text":"{{message}}",
+                    "icon":"success" 
+                })
+                </script>
+            {% endfor %}
+        {% endif %}
+        {% block content %} {% endblock %}
+        <div class="center_container">
+            <footer>
+                <p>&copy; {{current_year}} Juan Pablo Mejía Gómez - All rights reserved. Thanks and enjoy!</p>
+            </footer>
+        </div>
+        
+    </body>
+</html>
+  

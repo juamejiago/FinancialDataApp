@@ -1,0 +1,28 @@
+/*=====================================================
+Important! 
+/js/svg-icons.js is required.
+======================================================= */
+
+/*=====================================================
+Font Awesome 4.4 as SVG Icons via http://fontastic.me  
+class = .fa- (Go to https://fortawesome.github.io/Font-Awesome/icons/)
+
+SVG ICONS - Don't use icon fonts: 
+https://speakerdeck.com/ninjanails/death-to-fa-fonts
+======================================================= */
+
+svg {
+	display: inline-block;
+	vertical-align: middle;
+	width: 1em;
+	height: 1em;
+
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+	height: 32px;
+	width: 32px;
+	display: inline-block;
+	fill: currentColor;
+}

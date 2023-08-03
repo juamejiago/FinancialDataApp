@@ -1,0 +1,27 @@
+{% extends 'home.html' %}
+{% block accesories %}
+
+<div class="center_container">
+    <div class="login_container">
+        <h2>Select the category (or categories) to which you want to transfer the tag (or tags):</h2>
+        <ul class="categories_checkboxes_ul">
+            {% for category in list_categories %}
+                {% if category != current_category %}
+                    <li class="categories_checkboxes_li">
+                        <label class="categories_checkboxes">
+                            <input type="checkbox" name="categories_checkboxes_values" value="{{category}}" id="{{category}}"/> 
+                            {{category}}
+                        </label>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if mode == "add" %}
+            <button onclick="add_tag_to_category()">Submit</button>
+        {% else %}
+            <button onclick="transfer_tag_between_categories()">Submit</button>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

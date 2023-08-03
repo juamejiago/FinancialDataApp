@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="content">
+    {% if len_tags == 0 %}
+    <div class="title_home">
+      <h2>
+        There are no tags saved in the system. Create new ones pressing the following button.
+      </h2>
+    </div>
+    {% else %}
+      <button class="update_button" onclick="update_tag()">
+        Update data from tag/s
+      </button>
+        {% if request.user.is_authenticated %}
+            <div class="dropdown_div">
+              <button class="dropdown_button" onclick="drop_down_content_categories()">
+                Press this button to visualize categories &#9660;
+              </button>
+              <div class="dropdown_button_content" id="dropdown_content">
+                <button onclick="visualize_category()" id="visualize_all_tags" class="visualize_all_tags">Visualize all tags</button>
+                {% for category in list_categories %}
+                <div class="button_category_container">
+                  <button onclick="visualize_category()" id="{{category}}">{{category}}</button>
+                  <button onclick="delete_category('{{category}}')">&#9003;</button>
+                </div>
+                {% endfor %}
+                <div class="button_category_container_add_new" id="add_new_categories_container">
+                  <button id="dropdown_button_add_new" onclick="deploy_entry_field_category()">
+                    Add new category
+                  </button>
+                </div>
+              </div>
+            </div>
+        {% endif %}
+      <table class="table_tags">
+        <tr>
+          <th class="th_td_tags">
+            <button
+              class="button_select_all_tags"
+              onclick="select_all_checkboxes_tags()"
+            >
+              &#x2713;
+            </button>
+          </th>
+          {% for header_title in headers_title_list %}
+          <th
+            class="th_td_tags"
+            style="background-color: #4cae51; color: white; font-weight: bold; font-size: 15px;"
+          >
+            {{header_title}}
+            <button
+              onclick="tag_ordering('{{header_title}}s')"
+              name="filters"
+              class="button_classify_filters"
+            >
+              &#8593;</button
+            ><button
+              onclick="tag_ordering('{{header_title}}i')"
+              name="filters"
+              class="button_classify_filters"
+            >
+              &#8595;
+            </button>
+          </th>
+          {% endfor %}
+        </tr>
+        {% for row_with_data in financial_data_tags %}
+        <tr>
+          <td class="th_td_tags">
+            <input
+              class="tags_checkboxes"
+              type="checkbox"
+              name="tags_checkboxes_values"
+              value="{{row_with_data.0}}"
+            />
+          </td>
+          {% for data in row_with_data %} 
+            {% if data == -404 %}
+            <td class="th_td_tags" style="background-color: #aeaeae">{{data}}</td>
+            {% elif forloop.counter0 == 2 and data >= -403.999 and data <= 0.999 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}
+            </td>
+            {% elif forloop.counter0 == 2 and data >= 1 and data <= 1.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">{{data}}</td>
+            {% elif forloop.counter0 == 2 and data >= 2 %}
+            <td class="th_td_tags" style="background-color: #e87777">{{data}}</td>
+            {% elif forloop.counter0 == 3 and data >= -403.999 and data <= 1 %}
+            <td class="th_td_tags" style="background-color: #e87777">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 3 and data >= 1.001 and data <= 4.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 3 and data >= 5 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 6 and data >= -403.999 and data <= 24.999 %}
+            <td class="th_td_tags" style="background-color: #e87777">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 6 and data >= 25 and data <= 49.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 6 and data >= 50 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 7 and data >= -403.99 and data <= 20 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}
+            </td>
+            {% elif forloop.counter0 == 7 and data >= 20.001 and data <= 29.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">{{data}}</td>
+            {% elif forloop.counter0 == 7 and data >= 30 %}
+            <td class="th_td_tags" style="background-color: #e87777">{{data}}</td>
+            {% elif forloop.counter0 == 11 and data >= -403.99 and data <= 7 %}
+            <td class="th_td_tags" style="background-color: #e87777">{{data}}</td>
+            {% elif forloop.counter0 == 11 and data >= 7.001 and data <= 9.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">{{data}}</td>
+            {% elif forloop.counter0 == 11 and data >= 10 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}
+            </td>
+            {% elif forloop.counter0 == 12 and data >= -403.99 and data <= 15 %}
+            <td class="th_td_tags" style="background-color: #e87777">{{data}}</td>
+            {% elif forloop.counter0 == 12 and data >= 15.001 and data <= 19.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">{{data}}</td>
+            {% elif forloop.counter0 == 12 and data >= 20 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}
+            </td>
+            {% elif forloop.counter0 == 13 and data >= -403.99 and data <= 10 %}
+            <td class="th_td_tags" style="background-color: #e87777">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 13 and data >= 10.001 and data <= 19.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 13 and data >= 20 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}%
+            </td>
+            {% elif forloop.counter0 == 14 and data >= -403.99 and data <= 20 %}
+            <td class="th_td_tags" style="background-color: #e87777">{{data}}</td>
+            {% elif forloop.counter0 == 14 and data >= 20.001 and data <= 30 %}
+            <td class="th_td_tags" style="background-color: #f2f277">{{data}}</td>
+            {% elif forloop.counter0 == 14 and data >= 30.001 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}
+            </td>
+            {% elif forloop.counter0 == 15 and data >= -403.99 and data <= 3 %}
+            <td class="th_td_tags" style="background-color: #e87777">{{data}}</td>
+            {% elif forloop.counter0 == 15 and data >= 3.001 and data <= 4.999 %}
+            <td class="th_td_tags" style="background-color: #f2f277">{{data}}</td>
+            {% elif forloop.counter0 == 15 and data >= 5 %}
+            <td class="th_td_tags" style="background-color: lightgreen">
+              {{data}}
+            </td>
+            {% else %}
+            <td class="th_td_tags">{{data}}</td>
+            {% endif %} 
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+        {% if current_category == 'visualize_all_tags' and len_tags != 0 and request.user.is_authenticated %}
+          <button onclick="delete_tag()" class="button_table">
+            Delete tag/s
+          </button>
+        {% endif %}
+      {% endif %}
+      {% if current_category != 'visualize_all_tags' and len_tags != 0 and request.user.is_authenticated %}
+        <button onclick="create_tag_url()" class="button_table">
+          Create a new tag and add it to the current category
+        </button>
+      {% elif request.user.is_authenticated %}
+      <button onclick="create_tag_url()" class="button_table">
+        Create new tag/s
+      </button>
+      {% endif %}
+      {% if current_category == 'visualize_all_tags' and len_categories > 0 and request.user.is_authenticated %}
+        <button onclick="add_tag_to_category_url()" class="button_table">
+          Add tag/s to a category
+        </button>
+      {% endif %}
+      {% if current_category != 'visualize_all_tags' and request.user.is_authenticated %}
+        <button onclick="delete_tag_from_category()" class="button_table">
+          Delete tag/s from current category
+        </button>
+      {% endif %}
+      {% if current_category != 'visualize_all_tags' and len_categories > 1 and request.user.is_authenticated %}
+        <button onclick="transfer_tag_between_categories_url()" class="button_table">
+          Transfer tag/s between categories
+        </button>
+    {% endif %}
+  </div>
+
+    {% block accesories %} {% endblock %}
+{% endblock %}
