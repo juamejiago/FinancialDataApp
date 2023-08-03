@@ -302,18 +302,18 @@ function update_tag() {
 }
 
 function create_tag_url(){
-  if(window.location.href == "https://www.juamejiago.pythonanywhere.com/create_tag/"){
+  if(window.location.href == "https://gomezmazoy.pythonanywhere.com/create_tag/"){
     reload_main_page()
   }else{
-    window.location.replace("https://www.juamejiago.pythonanywhere.com/create_tag/");
+    window.location.replace("https://gomezmazoy.pythonanywhere.com/create_tag/");
   }
 }
 
 function add_tag_to_category_url() {
-  if(window.location.href == "https://www.juamejiago.pythonanywhere.com/add_tag_to_category/"){
+  if(window.location.href == "https://gomezmazoy.pythonanywhere.com/add_tag_to_category/"){
     reload_main_page()
   }else{
-    window.location.replace("https://www.juamejiago.pythonanywhere.com/add_tag_to_category/");
+    window.location.replace("https://gomezmazoy.pythonanywhere.com/add_tag_to_category/");
   }
 }
 
@@ -380,10 +380,10 @@ function add_tag_to_category() {
 }
 
 function transfer_tag_between_categories_url() {
-  if(window.location.href == "https://www.juamejiago.pythonanywhere.com/transfer_tag_between_categories/"){
+  if(window.location.href == "https://gomezmazoy.pythonanywhere.com/transfer_tag_between_categories/"){
     reload_main_page()
   }else{
-    window.location.replace("https://www.juamejiago.pythonanywhere.com/transfer_tag_between_categories/");
+    window.location.replace("https://gomezmazoy.pythonanywhere.com/transfer_tag_between_categories/");
   }
 }
 
@@ -452,6 +452,6 @@ function transfer_tag_between_categories() {
 }
 
 function reload_main_page() {
-  const url = "https://www.juamejiago.pythonanywhere.com/home";
-  window.location.replace("https://www.juamejiago.pythonanywhere.com/home");
+  const url = "https://gomezmazoy.pythonanywhere.com/home";
+  window.location.replace("https://gomezmazoy.pythonanywhere.com/home");
 }

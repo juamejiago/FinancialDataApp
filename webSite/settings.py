@@ -24,7 +24,7 @@ SECRET_KEY = "django-insecure-44@ecjouz^)9#_z8%r)s7q+yfd4s2q)k#=1_%g=i2havrn3k+*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
-ALLOWED_HOSTS = ["www.juamejiago.pythonanywhere.com"]
+ALLOWED_HOSTS = ["gomezmazoy.pythonanywhere.com"]
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 # Application definition
 
@@ -81,10 +81,10 @@ WSGI_APPLICATION = "webSite.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "juamejiago$default",
-        "HOST": "juamejiago.mysql.pythonanywhere-services.com",
+        "NAME": "gomezmazoy$default",
+        "HOST": "gomezmazoy.mysql.pythonanywhere-services.com",
         "PASSWORD": "juanpa0128j",
-        "USER": "juamejiago",
+        "USER": "gomezmazoy",
         "PORT": 3306,
     },
 }
@@ -125,7 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = "juamejiago.pythonanywhere.com/webApp/static"
+STATIC_ROOT = "gomezmazoy.pythonanywhere.com/webApp/static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
