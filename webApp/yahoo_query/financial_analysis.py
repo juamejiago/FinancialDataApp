@@ -1,3 +1,10 @@
+"""
+financial_analysis.py.
+
+This module handles the connection with the yfinance library. It consults the stock data from the symbol parameter, 
+performs several financial calculations with this data, and later organizes the information to return an organized list with it.
+"""
+
 import yfinance as yf
 
 
