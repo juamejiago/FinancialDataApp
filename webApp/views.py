@@ -37,61 +37,61 @@ def tag_ordering(request):
         ]
         index_filter = columns.index(filter_selected[0:-1])
         if filter_selected[-1] == "s":
-            for i in range(0, len(Auxiliar_class.auxiliar_table)):
-                for j in range(i + 1, len(Auxiliar_class.auxiliar_table)):
+            for i in range(0, len(AuxiliarClass.auxiliar_table)):
+                for j in range(i + 1, len(AuxiliarClass.auxiliar_table)):
                     if (
-                        Auxiliar_class.auxiliar_table[j][index_filter]
-                        > Auxiliar_class.auxiliar_table[i][index_filter]
+                        AuxiliarClass.auxiliar_table[j][index_filter]
+                        > AuxiliarClass.auxiliar_table[i][index_filter]
                     ):
                         (
-                            Auxiliar_class.auxiliar_table[i],
-                            Auxiliar_class.auxiliar_table[j],
+                            AuxiliarClass.auxiliar_table[i],
+                            AuxiliarClass.auxiliar_table[j],
                         ) = (
-                            Auxiliar_class.auxiliar_table[j],
-                            Auxiliar_class.auxiliar_table[i],
+                            AuxiliarClass.auxiliar_table[j],
+                            AuxiliarClass.auxiliar_table[i],
                         )
 
         elif filter_selected[-1] == "i":
-            for i in range(0, len(Auxiliar_class.auxiliar_table)):
-                for j in range(i + 1, len(Auxiliar_class.auxiliar_table)):
+            for i in range(0, len(AuxiliarClass.auxiliar_table)):
+                for j in range(i + 1, len(AuxiliarClass.auxiliar_table)):
                     if (
-                        Auxiliar_class.auxiliar_table[j][index_filter]
-                        < Auxiliar_class.auxiliar_table[i][index_filter]
+                        AuxiliarClass.auxiliar_table[j][index_filter]
+                        < AuxiliarClass.auxiliar_table[i][index_filter]
                     ):
                         (
-                            Auxiliar_class.auxiliar_table[i],
-                            Auxiliar_class.auxiliar_table[j],
+                            AuxiliarClass.auxiliar_table[i],
+                            AuxiliarClass.auxiliar_table[j],
                         ) = (
-                            Auxiliar_class.auxiliar_table[j],
-                            Auxiliar_class.auxiliar_table[i],
+                            AuxiliarClass.auxiliar_table[j],
+                            AuxiliarClass.auxiliar_table[i],
                         )
 
     return redirect("home", permanent=True)
 
 
 def delete_tag(request):
-    Auxiliar_class.selected_profile = Database_handler.consult_selected_profile(request)
+    AuxiliarClass.selected_profile = DatabaseHandler.consult_selected_profile(request)
     if request.method == "POST":
         tag_symbols = json.loads(request.body)
         for tag_symbol in tag_symbols:
             tag_already_saved_profile = (
-                Auxiliar_class.check_tag_already_saved_in_selected_profile(
-                    tag_symbol, Auxiliar_class.selected_profile
+                AuxiliarClass.check_tag_already_saved_in_selected_profile(
+                    tag_symbol, AuxiliarClass.selected_profile
                 )
             )
             if tag_already_saved_profile:
-                tag_selected = Database_handler.consult_tag_by_filter(tag_symbol)[0]
-                Database_handler.remove_tag_to_profile(
-                    tag_selected, Auxiliar_class.selected_profile
+                tag_selected = DatabaseHandler.consult_tag_by_filter(tag_symbol)[0]
+                DatabaseHandler.remove_tag_to_profile(
+                    tag_selected, AuxiliarClass.selected_profile
                 )
         tags_database_data = list(
-            Auxiliar_class.selected_profile.associated_tags.all().values_list()
+            AuxiliarClass.selected_profile.associated_tags.all().values_list()
         )
         if len(tags_database_data) == 0:
-            Database_handler.delete_data_from_database(
-                Database_handler.consult_all_categories_saved()
+            DatabaseHandler.delete_data_from_database(
+                DatabaseHandler.consult_all_categories_saved()
             )
-        Auxiliar_class.auxiliar_table = tags_database_data
+        AuxiliarClass.auxiliar_table = tags_database_data
 
     return redirect("home", permanent=True)
 
@@ -100,21 +100,21 @@ def delete_tag(request):
 def delete_category(request):
     if request.method == "POST":
         category = json.loads(request.body)
-        Database_handler.remove_category_to_profile(
-            Database_handler.consult_category_by_filter(category)[0],
-            Auxiliar_class.selected_profile,
+        DatabaseHandler.remove_category_to_profile(
+            DatabaseHandler.consult_category_by_filter(category)[0],
+            AuxiliarClass.selected_profile,
         )
-        Database_handler.delete_data_from_database(
-            Database_handler.consult_category_by_filter(category)
+        DatabaseHandler.delete_data_from_database(
+            DatabaseHandler.consult_category_by_filter(category)
         )
-        if Auxiliar_class.category_selected == category:
-            selected_profile = Database_handler.consult_selected_profile(request)
-            Auxiliar_class.selected_profile = selected_profile
+        if AuxiliarClass.category_selected == category:
+            selected_profile = DatabaseHandler.consult_selected_profile(request)
+            AuxiliarClass.selected_profile = selected_profile
             tags_database_data = list(
                 selected_profile.associated_tags.all().values_list()
             )
-            Auxiliar_class.auxiliar_table = tags_database_data
-            Auxiliar_class.category_selected = "visualize_all_tags"
+            AuxiliarClass.auxiliar_table = tags_database_data
+            AuxiliarClass.category_selected = "visualize_all_tags"
 
     return redirect("home", permanent=True)
 
@@ -123,39 +123,39 @@ def delete_category(request):
 def delete_tag_from_category(request):
     if request.method == "POST":
         tag_symbols = json.loads(request.body)
-        selected_category = Auxiliar_class.category_selected
-        Database_handler.update_category_data(selected_category, tag_symbols, "delete")
-        selected_category_data = Database_handler.consult_category_by_filter(
-            Auxiliar_class.category_selected
+        selected_category = AuxiliarClass.category_selected
+        DatabaseHandler.update_category_data(selected_category, tag_symbols, "delete")
+        selected_category_data = DatabaseHandler.consult_category_by_filter(
+            AuxiliarClass.category_selected
         ).values_list()
         selected_tags_string = selected_category_data[0][1]
         selected_tags = ast.literal_eval(selected_tags_string)
         tags_database_data = list(
-            Database_handler.consult_tags_according_to_filter(
+            DatabaseHandler.consult_tags_according_to_filter(
                 selected_tags
             ).values_list()
         )
         if len(tags_database_data) == 0:
-            selected_profile = Database_handler.consult_selected_profile(request)
-            Auxiliar_class.selected_profile = selected_profile
+            selected_profile = DatabaseHandler.consult_selected_profile(request)
+            AuxiliarClass.selected_profile = selected_profile
             tags_database_data = list(
                 selected_profile.associated_tags.all().values_list()
             )
-            Auxiliar_class.auxiliar_table = tags_database_data
-            Database_handler.delete_data_from_database(
-                Database_handler.consult_category_by_filter(selected_category)
+            AuxiliarClass.auxiliar_table = tags_database_data
+            DatabaseHandler.delete_data_from_database(
+                DatabaseHandler.consult_category_by_filter(selected_category)
             )
-            Auxiliar_class.category_selected = "visualize_all_tags"
+            AuxiliarClass.category_selected = "visualize_all_tags"
 
-        Auxiliar_class.auxiliar_table = tags_database_data
+        AuxiliarClass.auxiliar_table = tags_database_data
 
     return redirect("home", permanent=True)
 
 
 @login_required
 def add_tag_to_category(request):
-    tags_database_data = Auxiliar_class.auxiliar_table
-    name_categories = Auxiliar_class.obtain_name_categories()
+    tags_database_data = AuxiliarClass.auxiliar_table
+    name_categories = AuxiliarClass.obtain_name_categories()
 
     if request.method == "POST":
         category_tags_selected = json.loads(request.body)
@@ -163,7 +163,7 @@ def add_tag_to_category(request):
         selected_tags = category_tags_selected["selected_tags"]
         for category in selected_categories:
             for tag in selected_tags:
-                Database_handler.update_category_data(category, tag, "add")
+                DatabaseHandler.update_category_data(category, tag, "add")
 
         return redirect("home", permanent=True)
     elif request.method == "GET":
@@ -194,7 +194,7 @@ def add_tag_to_category(request):
                 "comprobation_create_tag": True,
                 "list_categories": name_categories,
                 "mode": "add",
-                "current_category": Auxiliar_class.category_selected,
+                "current_category": AuxiliarClass.category_selected,
                 "len_categories": len(name_categories),
                 "current_year": datetime.datetime.now().year,
             },
@@ -203,9 +203,9 @@ def add_tag_to_category(request):
 
 @login_required
 def transfer_tag_between_categories(request):
-    tags_database_data = Auxiliar_class.auxiliar_table
+    tags_database_data = AuxiliarClass.auxiliar_table
 
-    name_categories = Auxiliar_class.obtain_name_categories()
+    name_categories = AuxiliarClass.obtain_name_categories()
 
     if request.method == "POST":
         category_tags_selected = json.loads(request.body)
@@ -213,12 +213,12 @@ def transfer_tag_between_categories(request):
         selected_tags = category_tags_selected["selected_tags"]
         for category in selected_categories:
             for tag in selected_tags:
-                Database_handler.update_category_data(category, tag, "add")
-        Database_handler.update_category_data(
-            Auxiliar_class.category_selected, selected_tags, "delete"
+                DatabaseHandler.update_category_data(category, tag, "add")
+        DatabaseHandler.update_category_data(
+            AuxiliarClass.category_selected, selected_tags, "delete"
         )
 
-        return visualize_category(request, Auxiliar_class.category_selected)
+        return visualize_category(request, AuxiliarClass.category_selected)
 
     elif request.method == "GET":
         return render(
@@ -248,7 +248,7 @@ def transfer_tag_between_categories(request):
                 "comprobation_create_tag": True,
                 "list_categories": name_categories,
                 "mode": "transfer",
-                "current_category": Auxiliar_class.category_selected,
+                "current_category": AuxiliarClass.category_selected,
                 "len_categories": len(name_categories),
                 "current_year": datetime.datetime.now().year,
             },
@@ -258,8 +258,8 @@ def transfer_tag_between_categories(request):
 def create_tag(request):
     inserted_symbol = str(request.POST.get("symbol"))
     form_symbol = CreateTag(request.POST)
-    tags_database_data = Auxiliar_class.auxiliar_table
-    Auxiliar_class.selected_profile = Database_handler.consult_selected_profile(request)
+    tags_database_data = AuxiliarClass.auxiliar_table
+    AuxiliarClass.selected_profile = DatabaseHandler.consult_selected_profile(request)
 
     if (
         inserted_symbol is None
@@ -269,7 +269,7 @@ def create_tag(request):
     inserted_symbol = inserted_symbol.upper()
 
     if request.method == "POST":
-        name_categories = Auxiliar_class.obtain_name_categories()
+        name_categories = AuxiliarClass.obtain_name_categories()
 
         if (
             len(inserted_symbol) == inserted_symbol.count(" ")
@@ -302,9 +302,9 @@ def create_tag(request):
                     "financial_data_tags": tags_database_data,
                     "len_tags": len(tags_database_data),
                     "comprobation_create_tag": True,
-                    "current_category": Auxiliar_class.category_selected,
+                    "current_category": AuxiliarClass.category_selected,
                     "list_categories": name_categories,
-                    "category": Auxiliar_class.category_selected,
+                    "category": AuxiliarClass.category_selected,
                     "len_categories": len(name_categories),
                     "current_year": datetime.datetime.now().year,
                 },
@@ -314,49 +314,47 @@ def create_tag(request):
             initial_data = None
             tag_already_saved = False
             # Checks that that the inserted tag symbol is not saved on the database
-            tag_already_saved = Auxiliar_class.check_tag_already_saved_in_general_db(
+            tag_already_saved = AuxiliarClass.check_tag_already_saved_in_general_db(
                 inserted_symbol
             )
             tag_already_saved_profile = (
-                Auxiliar_class.check_tag_already_saved_in_selected_profile(
-                    inserted_symbol, Auxiliar_class.selected_profile
+                AuxiliarClass.check_tag_already_saved_in_selected_profile(
+                    inserted_symbol, AuxiliarClass.selected_profile
                 )
             )
             if not (tag_already_saved) and form_symbol.is_valid():
                 # Create a new tag and save it to the database
                 row_with_data = fn.financeAnalisis(inserted_symbol)
-                Database_handler.create_new_tag(row_with_data)
+                DatabaseHandler.create_new_tag(row_with_data)
             if not (tag_already_saved_profile) and form_symbol.is_valid():
-                selected_tag = Database_handler.consult_tag_by_filter(inserted_symbol)[
-                    0
-                ]
-                Database_handler.add_tag_to_profile(
-                    selected_tag, Auxiliar_class.selected_profile
+                selected_tag = DatabaseHandler.consult_tag_by_filter(inserted_symbol)[0]
+                DatabaseHandler.add_tag_to_profile(
+                    selected_tag, AuxiliarClass.selected_profile
                 )
             else:
                 initial_data = {"symbol": "Bad format or it already exists. Try again"}
-            if Auxiliar_class.category_selected == "visualize_all_tags":
-                selected_profile = Database_handler.consult_selected_profile(request)
-                Auxiliar_class.selected_profile = selected_profile
+            if AuxiliarClass.category_selected == "visualize_all_tags":
+                selected_profile = DatabaseHandler.consult_selected_profile(request)
+                AuxiliarClass.selected_profile = selected_profile
                 tags_database_data = list(
                     selected_profile.associated_tags.all().values_list()
                 )
-                Auxiliar_class.auxiliar_table = tags_database_data
+                AuxiliarClass.auxiliar_table = tags_database_data
             else:
-                Database_handler.update_category_data(
-                    Auxiliar_class.category_selected, inserted_symbol, "add"
+                DatabaseHandler.update_category_data(
+                    AuxiliarClass.category_selected, inserted_symbol, "add"
                 )
-                selected_category_data = Database_handler.consult_category_by_filter(
-                    Auxiliar_class.category_selected
+                selected_category_data = DatabaseHandler.consult_category_by_filter(
+                    AuxiliarClass.category_selected
                 ).values_list()
                 selected_tags_string = selected_category_data[0][1]
                 selected_tags = ast.literal_eval(selected_tags_string)
                 tags_database_data = list(
-                    Database_handler.consult_tags_according_to_filter(
+                    DatabaseHandler.consult_tags_according_to_filter(
                         selected_tags
                     ).values_list()
                 )
-                Auxiliar_class.auxiliar_table = tags_database_data
+                AuxiliarClass.auxiliar_table = tags_database_data
             return render(
                 request,
                 "create_tag.html",
@@ -383,9 +381,9 @@ def create_tag(request):
                     "financial_data_tags": tags_database_data,
                     "len_tags": len(tags_database_data),
                     "comprobation_create_tag": False,
-                    "current_category": Auxiliar_class.category_selected,
+                    "current_category": AuxiliarClass.category_selected,
                     "list_categories": name_categories,
-                    "category": Auxiliar_class.category_selected,
+                    "category": AuxiliarClass.category_selected,
                     "len_categories": len(name_categories),
                     "current_year": datetime.datetime.now().year,
                 },
@@ -407,47 +405,47 @@ def create_tag(request):
                         del names_unfixed[0 : index + 2]
                         # First comprobation on all tags on the database
                         tag_already_saved = (
-                            Auxiliar_class.check_tag_already_saved_in_general_db(
+                            AuxiliarClass.check_tag_already_saved_in_general_db(
                                 "".join(names_fixed)
                             )
                         )
                         tag_already_saved_profile = (
-                            Auxiliar_class.check_tag_already_saved_in_selected_profile(
-                                "".join(names_fixed), Auxiliar_class.selected_profile
+                            AuxiliarClass.check_tag_already_saved_in_selected_profile(
+                                "".join(names_fixed), AuxiliarClass.selected_profile
                             )
                         )
 
                         if names_fixed.count(" ") != len(names_fixed):
                             if not (tag_already_saved):
                                 row_with_data = fn.financeAnalisis("".join(names_fixed))
-                                Database_handler.create_new_tag(row_with_data)
+                                DatabaseHandler.create_new_tag(row_with_data)
                             if not (tag_already_saved_profile):
-                                selected_tag = Database_handler.consult_tag_by_filter(
+                                selected_tag = DatabaseHandler.consult_tag_by_filter(
                                     "".join(names_fixed)
                                 )[0]
-                                Database_handler.add_tag_to_profile(
-                                    selected_tag, Auxiliar_class.selected_profile
+                                DatabaseHandler.add_tag_to_profile(
+                                    selected_tag, AuxiliarClass.selected_profile
                                 )
-                            if Auxiliar_class.category_selected != "visualize_all_tags":
+                            if AuxiliarClass.category_selected != "visualize_all_tags":
                                 selected_category_data = (
-                                    Database_handler.consult_category_by_filter(
-                                        Auxiliar_class.category_selected
+                                    DatabaseHandler.consult_category_by_filter(
+                                        AuxiliarClass.category_selected
                                     ).values_list()
                                 )
                                 selected_tags_string = selected_category_data[0][1]
                                 selected_tags = ast.literal_eval(selected_tags_string)
                                 tags_database_data = list(
-                                    Database_handler.consult_tags_according_to_filter(
+                                    DatabaseHandler.consult_tags_according_to_filter(
                                         selected_tags
                                     ).values_list()
                                 )
                             else:
                                 tags_database_data = list(
-                                    Database_handler.consult_all_tags_saved().values_list()
+                                    DatabaseHandler.consult_all_tags_saved().values_list()
                                 )
                             # Second comprobation on all tags on the category
                             tag_already_saved = False
-                            if Auxiliar_class.category_selected != "visualize_all_tags":
+                            if AuxiliarClass.category_selected != "visualize_all_tags":
                                 for saved_tags in tags_database_data:
                                     if (
                                         "".join(names_fixed)
@@ -456,20 +454,20 @@ def create_tag(request):
                                         tag_already_saved = True
                                         break
                                 if not (tag_already_saved):
-                                    Database_handler.update_category_data(
-                                        Auxiliar_class.category_selected,
+                                    DatabaseHandler.update_category_data(
+                                        AuxiliarClass.category_selected,
                                         "".join(names_fixed),
                                         "add",
                                     )
                                 selected_category_data = (
-                                    Database_handler.consult_category_by_filter(
-                                        Auxiliar_class.category_selected
+                                    DatabaseHandler.consult_category_by_filter(
+                                        AuxiliarClass.category_selected
                                     ).values_list()
                                 )
                                 selected_tags_string = selected_category_data[0][1]
                                 selected_tags = ast.literal_eval(selected_tags_string)
                                 tags_database_data = list(
-                                    Database_handler.consult_tags_according_to_filter(
+                                    DatabaseHandler.consult_tags_according_to_filter(
                                         selected_tags
                                     ).values_list()
                                 )
@@ -477,22 +475,22 @@ def create_tag(request):
                 # Exits the while loop when the list is already passed
                 if len(names_unfixed) == 0:
                     break
-            Auxiliar_class.auxiliar_table = tags_database_data
+            AuxiliarClass.auxiliar_table = tags_database_data
 
         return redirect("/create_tag/")
 
     else:
-        if Auxiliar_class.category_selected == "visualize_all_tags":
-            selected_profile = Database_handler.consult_selected_profile(request)
-            Auxiliar_class.selected_profile = selected_profile
+        if AuxiliarClass.category_selected == "visualize_all_tags":
+            selected_profile = DatabaseHandler.consult_selected_profile(request)
+            AuxiliarClass.selected_profile = selected_profile
             tags_database_data = list(
                 selected_profile.associated_tags.all().values_list()
             )
-            Auxiliar_class.auxiliar_table = tags_database_data
+            AuxiliarClass.auxiliar_table = tags_database_data
         else:
-            tags_database_data = Auxiliar_class.auxiliar_table
+            tags_database_data = AuxiliarClass.auxiliar_table
 
-        name_categories = Auxiliar_class.obtain_name_categories()
+        name_categories = AuxiliarClass.obtain_name_categories()
 
         return render(
             request,
@@ -520,9 +518,9 @@ def create_tag(request):
                 "financial_data_tags": tags_database_data,
                 "len_tags": len(tags_database_data),
                 "comprobation_create_tag": False,
-                "current_category": Auxiliar_class.category_selected,
+                "current_category": AuxiliarClass.category_selected,
                 "list_categories": name_categories,
-                "category": Auxiliar_class.category_selected,
+                "category": AuxiliarClass.category_selected,
                 "len_categories": len(name_categories),
                 "current_year": datetime.datetime.now().year,
             },
@@ -530,55 +528,55 @@ def create_tag(request):
 
 
 def home(request):
-    name_categories = Auxiliar_class.obtain_name_categories()
-    if Auxiliar_class.category_selected == "":
-        Auxiliar_class.category_selected = "visualize_all_tags"
+    name_categories = AuxiliarClass.obtain_name_categories()
+    if AuxiliarClass.category_selected == "":
+        AuxiliarClass.category_selected = "visualize_all_tags"
     if request.user.is_authenticated:
         if request.method == "POST":
             selected_category = json.loads(request.body)
             category = selected_category[0]
             if (
-                len(Database_handler.consult_category_by_filter(category).values_list())
+                len(DatabaseHandler.consult_category_by_filter(category).values_list())
                 == 0
             ):
-                Auxiliar_class.category_selected = category
-                Database_handler.create_new_category(selected_category)
-                Database_handler.add_category_to_profile(
-                    Database_handler.consult_category_by_filter(category)[0],
-                    Auxiliar_class.selected_profile,
+                AuxiliarClass.category_selected = category
+                DatabaseHandler.create_new_category(selected_category)
+                DatabaseHandler.add_category_to_profile(
+                    DatabaseHandler.consult_category_by_filter(category)[0],
+                    AuxiliarClass.selected_profile,
                 )
-                selected_category_data = Database_handler.consult_category_by_filter(
+                selected_category_data = DatabaseHandler.consult_category_by_filter(
                     category
                 ).values_list()
                 selected_tags_string = selected_category_data[0][1]
                 selected_tags = ast.literal_eval(selected_tags_string)
                 tags_database_data = list(
-                    Database_handler.consult_tags_according_to_filter(
+                    DatabaseHandler.consult_tags_according_to_filter(
                         selected_tags
                     ).values_list()
                 )
-                Auxiliar_class.auxiliar_table = tags_database_data
-        if Auxiliar_class.category_selected == "visualize_all_tags":
-            selected_profile = Database_handler.consult_selected_profile(request)
-            Auxiliar_class.selected_profile = selected_profile
+                AuxiliarClass.auxiliar_table = tags_database_data
+        if AuxiliarClass.category_selected == "visualize_all_tags":
+            selected_profile = DatabaseHandler.consult_selected_profile(request)
+            AuxiliarClass.selected_profile = selected_profile
             tags_database_data = list(
                 selected_profile.associated_tags.all().values_list()
             )
-            if len(Auxiliar_class.auxiliar_table) == 0:
-                Auxiliar_class.auxiliar_table = tags_database_data
+            if len(AuxiliarClass.auxiliar_table) == 0:
+                AuxiliarClass.auxiliar_table = tags_database_data
             else:
-                tags_database_data = Auxiliar_class.auxiliar_table
+                tags_database_data = AuxiliarClass.auxiliar_table
         else:
-            tags_database_data = Auxiliar_class.auxiliar_table
+            tags_database_data = AuxiliarClass.auxiliar_table
     else:
-        profile_objects = list(Database_handler.consult_all_profiles_saved())
+        profile_objects = list(DatabaseHandler.consult_all_profiles_saved())
         tags_database_data = list(
             profile_objects[-1].associated_tags.all().values_list()
         )
-        if len(Auxiliar_class.auxiliar_table) == 0:
-            Auxiliar_class.auxiliar_table = tags_database_data
+        if len(AuxiliarClass.auxiliar_table) == 0:
+            AuxiliarClass.auxiliar_table = tags_database_data
         else:
-            tags_database_data = Auxiliar_class.auxiliar_table
+            tags_database_data = AuxiliarClass.auxiliar_table
     return render(
         request,
         "home.html",
@@ -604,7 +602,7 @@ def home(request):
             "financial_data_tags": tags_database_data,
             "len_tags": len(tags_database_data),
             "list_categories": name_categories,
-            "current_category": Auxiliar_class.category_selected,
+            "current_category": AuxiliarClass.category_selected,
             "len_categories": len(name_categories),
             "current_year": datetime.datetime.now().year,
         },
@@ -625,9 +623,9 @@ def login(request):
 
 @login_required
 def exit(request):
-    Auxiliar_class.auxiliar_table = []
-    Auxiliar_class.category_selected = ""
-    Auxiliar_class.selected_profile = ""
+    AuxiliarClass.auxiliar_table = []
+    AuxiliarClass.category_selected = ""
+    AuxiliarClass.selected_profile = ""
     logout(request)
     messages.success(request, "Successful logout. Hope to see you again soon!")
     return redirect("presentation")
@@ -657,30 +655,30 @@ def visualize_category(request, selected_category=None):
         selected_category = json.loads(request.body)
 
     tags_database_data = []
-    Auxiliar_class.category_selected = selected_category
+    AuxiliarClass.category_selected = selected_category
     if selected_category == "visualize_all_tags":
-        selected_profile = Database_handler.consult_selected_profile(request)
-        Auxiliar_class.selected_profile = selected_profile
+        selected_profile = DatabaseHandler.consult_selected_profile(request)
+        AuxiliarClass.selected_profile = selected_profile
         tags_database_data = list(selected_profile.associated_tags.all().values_list())
-        Auxiliar_class.auxiliar_table = tags_database_data
+        AuxiliarClass.auxiliar_table = tags_database_data
     else:
-        selected_category_data = Database_handler.consult_category_by_filter(
+        selected_category_data = DatabaseHandler.consult_category_by_filter(
             selected_category
         ).values_list()
         selected_tags_string = selected_category_data[0][1]
         selected_tags = ast.literal_eval(selected_tags_string)
         tags_database_data = list(
-            Database_handler.consult_tags_according_to_filter(
+            DatabaseHandler.consult_tags_according_to_filter(
                 selected_tags
             ).values_list()
         )
-    Auxiliar_class.auxiliar_table = tags_database_data
+    AuxiliarClass.auxiliar_table = tags_database_data
     return redirect("home", permanent=True)
 
 
 def update_tag(request):
-    Database_handler.update_tags_data()
-    Auxiliar_class.auxiliar_table = []
+    DatabaseHandler.update_tags_data()
+    AuxiliarClass.auxiliar_table = []
     if request.method == "POST":
         response = {
             "message": "OK",
@@ -690,7 +688,7 @@ def update_tag(request):
         return redirect("home")
 
 
-class Auxiliar_class:
+class AuxiliarClass:
     auxiliar_table = []
     category_selected = ""
     selected_profile = None
@@ -698,7 +696,7 @@ class Auxiliar_class:
     @classmethod
     def obtain_name_categories(cls):
         categories_database_data = list(
-            Database_handler.consult_all_categories_saved().values_list()
+            DatabaseHandler.consult_all_categories_saved().values_list()
         )
         name_categories = []
         for category_tuple in categories_database_data:
@@ -709,7 +707,7 @@ class Auxiliar_class:
     def check_tag_already_saved_in_general_db(cls, inserted_symbol):
         tag_already_saved = False
         tags_database_data = list(
-            Database_handler.consult_all_tags_saved().values_list()
+            DatabaseHandler.consult_all_tags_saved().values_list()
         )
         for saved_tags in tags_database_data:
             if inserted_symbol in str(saved_tags[0]).upper():
@@ -730,7 +728,7 @@ class Auxiliar_class:
         return tag_already_saved
 
 
-class Database_handler:
+class DatabaseHandler:
     @classmethod
     def consult_all_tags_saved(cls):
         return Tag.objects.all()
